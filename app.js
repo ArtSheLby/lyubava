@@ -66,7 +66,7 @@ function orderText() {
     return (n + 1) + ". " + i.title + ": " + i.qty + " шт, " + fmtPrice(sum);
   });
   return ORDER_GREETING + "\n\n" + lines.join("\n") + "\n\nИтого: " + count + " шт, " +
-    fmtPrice(total) + "\n\nСогласие на обработку персональных данных: да, политика ред. 1 от 09.11.2026.";
+    fmtPrice(total);
 }
 
 function orderSend() {

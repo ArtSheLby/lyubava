@@ -30,7 +30,7 @@
   --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.30);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: clip; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; overflow-x: clip; scroll-padding-top: 84px; -webkit-tap-highlight-color: transparent; }
 body { font-family: var(--font-ui); font-size: 1rem; line-height: 1.55; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 html:has(body.modal-open) { overflow-y: hidden; }
