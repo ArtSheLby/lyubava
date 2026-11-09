@@ -104,7 +104,7 @@ function buildCartModal() {
           '<div class="cart-total"><span>Итого</span><b class="mono" id="cartTotal">0 ₽</b></div>' +
           '<div class="consent">' +
             '<input type="checkbox" id="cartConsent" aria-required="true">' +
-            '<label for="cartConsent">Я ознакомлен(а) с <a href="privacy.html" target="_blank" rel="noopener noreferrer">политикой обработки персональных данных</a> и даю согласие на обработку данных для оформления заказа.</label>' +
+            '<label for="cartConsent">Я ознакомлен(а) с <a href="https://ru.tiens.com/singlePage?id=56" target="_blank" rel="noopener noreferrer">политикой обработки данных ООО «Тяньши»</a> и согласен(на) на передачу данных заказа в компанию для оформления.</label>' +
           '</div>' +
           '<div class="cart-actions">' +
             '<button class="btn btn-primary" type="button" id="cartWa">Отправить в WhatsApp</button>' +
