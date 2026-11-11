@@ -432,3 +432,10 @@ footer .credit a:hover { color: var(--text); }
   .products-grid::-webkit-scrollbar { display: none; }
   .products-grid .pcard { flex: 0 0 76%; scroll-snap-align: start; }
 }
+
+/* Плейсхолдер карточки без фото (товары, по которым фото ещё не переданы) */
+.p-ph { width: 100%; aspect-ratio: 1; display: grid; place-items: center;
+  background: linear-gradient(135deg, #e8efe6, #d6e2d2); color: #4d6b52;
+  font: 700 clamp(28px, 5vw, 48px)/1 "Onest", sans-serif; border-radius: 14px; }
+.p-ph-sm { width: 96px; height: 96px; aspect-ratio: auto; border-radius: 10px;
+  font-size: 28px; flex: 0 0 96px; }

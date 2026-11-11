@@ -1,4 +1,4 @@
-/* ===== Общий скрипт: переход на запись, корзина, рендер продукции ===== */
+﻿/* ===== Общий скрипт: переход на запись, корзина, рендер продукции ===== */
 
 function roleLabel(key) { var r = ROLES.find(function (x) { return x.key === key; }); return r ? r.label : ""; }
 
@@ -29,6 +29,7 @@ document.addEventListener("keydown", function (e) {
 
 /* ===== Корзина ===== */
 var CART_KEY = "lyubava_cart";
+var ASSET_BASE = document.documentElement.getAttribute("data-base") || "";
 var cartLastFocus = null;
 
 function cartLoad() {
@@ -66,7 +67,7 @@ function orderText() {
     return (n + 1) + ". " + i.title + ": " + i.qty + " шт, " + fmtPrice(sum);
   });
   return ORDER_GREETING + "\n\n" + lines.join("\n") + "\n\nИтого: " + count + " шт, " +
-    fmtPrice(total);
+    (total > 0 ? fmtPrice(total) : "уточняется");
 }
 
 function orderSend() {
@@ -104,7 +105,7 @@ function buildCartModal() {
           '<div class="cart-total"><span>Итого</span><b class="mono" id="cartTotal">0 ₽</b></div>' +
           '<div class="consent">' +
             '<input type="checkbox" id="cartConsent" aria-required="true">' +
-            '<label for="cartConsent">Я ознакомлен(а) с <a href="https://ru.tiens.com/singlePage?id=56" target="_blank" rel="noopener noreferrer">политикой обработки данных ООО «Тяньши»</a> и согласен(на) на передачу данных заказа в компанию для оформления.</label>' +
+            '<label for="cartConsent">Я ознакомлен(а) с <a href="/privacy/" target="_blank" rel="noopener noreferrer">политикой обработки персональных данных</a> и согласен(на) на обработку данных для оформления заказа.</label>' +
           '</div>' +
           '<div class="cart-actions">' +
             '<button class="btn btn-primary" type="button" id="cartWa">Отправить в WhatsApp</button>' +
@@ -135,7 +136,7 @@ function cartRender() {
     var r = document.createElement("div");
     r.className = "cart-row";
     r.innerHTML =
-      '<img src="' + i.img + '" alt="" width="96" height="96">' +
+      (i.img ? '<img src="' + ASSET_BASE + i.img + '" alt="" width="96" height="96">' : '<div class="p-ph p-ph-sm" aria-hidden="true">' + i.title.slice(0, 1) + '</div>') +
       '<div class="cr-main"><div class="cr-t">' + i.title + '</div><div class="cr-p mono">' + i.price + "</div></div>" +
       '<div class="cr-qty">' +
         '<button type="button" class="qty-btn" data-act="dec" data-id="' + i.id + '" aria-label="Меньше">−</button>' +
@@ -146,7 +147,7 @@ function cartRender() {
     rows.appendChild(r);
   });
   var t = document.getElementById("cartTotal");
-  if (t) t.textContent = fmtPrice(total);
+  if (t) t.textContent = items.length && total === 0 ? "уточняется" : fmtPrice(total);
   consentSync();
 }
 
@@ -246,7 +247,7 @@ function pickSync() {
   var count = document.getElementById("pickCount");
   if (count) count.textContent = ids.length;
   var sumEl = document.getElementById("pickSum");
-  if (sumEl) sumEl.textContent = fmtPrice(sum);
+  if (sumEl) sumEl.textContent = ids.length && sum === 0 ? "уточняется" : fmtPrice(sum);
   if (bar) bar.classList.toggle("show", ids.length > 0);
 }
 
@@ -274,7 +275,11 @@ function pickAddAll() {
 buildPickBar();
 
 /* ===== Рендер продукции ===== */
-function productId(t) { return t.img.split("/").pop().replace(/\.\w+$/, ""); }
+function productId(t) {
+  if (t.id) return t.id;
+  if (t.img) return t.img.split("/").pop().replace(/\.\w+$/, "");
+  return t.title.toLowerCase().replace(/[^a-zа-яё0-9]+/g, "-").replace(/^-|-$/g, "");
+}
 
 function productCard(t, onCatalog) {
   var c = document.createElement("div");
@@ -289,7 +294,7 @@ function productCard(t, onCatalog) {
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>' +
       "</button>" +
     "</div>" +
-    '<img src="' + t.img + '" alt="' + t.title + '" width="540" height="540" loading="lazy" decoding="async">' +
+    (t.img ? '<img src="' + ASSET_BASE + t.img + '" alt="' + t.title + '" width="540" height="540" loading="lazy" decoding="async">' : '<div class="p-ph" aria-hidden="true">' + t.title.slice(0, 1) + '</div>') +
     '<div class="pt">' + t.title + "</div>" +
     '<div class="pd" id="' + pid + '">' + t.desc + "</div>" +
     '<button class="pd-toggle" type="button" aria-expanded="false" aria-controls="' + pid + '">Подробнее</button>' +
